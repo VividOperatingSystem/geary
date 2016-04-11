@@ -168,11 +168,6 @@ public class MainWindow : Gtk.ApplicationWindow {
                 border-bottom-width: 0;
             }
 
-            ComposerEmbed GtkHeaderBar,
-            ComposerBox GtkHeaderBar,
-            GtkBox.vertical GtkHeaderBar {
-                border-radius: 0px;
-            }
             .geary-titlebar-left:dir(ltr),
             .geary-titlebar-right:dir(rtl) {
                 border-top-right-radius: 0px;
