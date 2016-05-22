@@ -341,13 +341,13 @@ public class ConversationMessage : Gtk.Box {
                                     error.message);
                         }
                     }
-                    bind_event(web_view, "html", "contextmenu",
+                    Util.DOM.bind_event(web_view, "html", "contextmenu",
                                (Callback) on_context_menu, this);
-                    bind_event(web_view, "body a", "click",
+                    Util.DOM.bind_event(web_view, "body a", "click",
                                (Callback) on_link_clicked, this);
-                    bind_event(web_view, ".quote_container > .shower", "click",
+                    Util.DOM.bind_event(web_view, ".quote_container > .shower", "click",
                                (Callback) on_show_quote_clicked, this);
-                    bind_event(web_view, ".quote_container > .hider", "click",
+                    Util.DOM.bind_event(web_view, ".quote_container > .hider", "click",
                                (Callback) on_hide_quote_clicked, this);
 
                     // XXX Not actually true since remote images will
@@ -504,7 +504,7 @@ public class ConversationMessage : Gtk.Box {
         return "<img alt=\"%s\" class=\"%s %s\" src=\"%s\" replaced-id=\"%s\" %s />".printf(
             Geary.HTML.escape_markup(filename),
             DATA_IMAGE_CLASS, REPLACED_IMAGE_CLASS,
-            assemble_data_uri(mime_type, rotated_image),
+            Util.DOM.assemble_data_uri(mime_type, rotated_image),
             Geary.HTML.escape_markup(replaced_image.id),
             escaped_content_id != null ? @"cid=\"$escaped_content_id\"" : "");
     }
@@ -568,7 +568,7 @@ public class ConversationMessage : Gtk.Box {
                 WebKit.DOM.Node parent = blockquote_node.get_parent_node();
 
                 // Make sure this is a top level blockquote.
-                if (node_is_child_of(blockquote_node, "BLOCKQUOTE")) {
+                if (Util.DOM.node_is_child_of(blockquote_node, "BLOCKQUOTE")) {
                     continue;
                 }
 
@@ -628,7 +628,7 @@ public class ConversationMessage : Gtk.Box {
                     // Replace the SRC to a data URI, the class to a known label for the popup menu,
                     // and the ALT to its filename, if supplied
                     img.remove_attribute("src");  // Work around a WebKitGTK+ crash. Bug 764152
-                    img.set_attribute("src", assemble_data_uri(mimetype, image_content));
+                    img.set_attribute("src", Util.DOM.assemble_data_uri(mimetype, image_content));
                     img.set_attribute("class", DATA_IMAGE_CLASS);
                     if (!Geary.String.is_empty(filename))
                         img.set_attribute("alt", filename);
@@ -691,7 +691,7 @@ public class ConversationMessage : Gtk.Box {
             WebKit.DOM.HTMLElement div = div_list.item(i) as WebKit.DOM.HTMLElement;
             string inner_html = div.get_inner_html();
             if ((sig_regex.match(inner_html) || alternate_sig_regex.match(inner_html)) &&
-                !node_is_child_of(div, "BLOCKQUOTE")) {
+                !Util.DOM.node_is_child_of(div, "BLOCKQUOTE")) {
                 break;
             }
         }
